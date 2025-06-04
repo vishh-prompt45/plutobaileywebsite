@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Office Portal</h1>
+    <p class="lead">Access your department resources and manage SIP documents.</p>
+    <hr class="my-4">
+    <p>Select your department from the navigation menu to access specific resources.</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Access</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% if current_user.can_access('sales') %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('sales') }}" class="text-decoration-none">Sales Department</a>
+                    </li>
+                    {% endif %}
+                    {% if current_user.can_access('dispatcher') %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('dispatcher') }}" class="text-decoration-none">Dispatcher Department</a>
+                    </li>
+                    {% endif %}
+                    {% if current_user.can_access('purchase') %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('purchase') }}" class="text-decoration-none">Purchase Department</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Your Information</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Username:</strong> {{ current_user.username }}</p>
+                <p><strong>Email:</strong> {{ current_user.email }}</p>
+                <p><strong>Department:</strong> {{ current_user.department }}</p>
+                <p><strong>Roles:</strong> 
+                    {% for role in current_user.roles %}
+                        <span class="badge bg-primary">{{ role.name }}</span>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

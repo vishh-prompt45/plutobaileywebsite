@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Purchase Department{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Purchase Department</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">SIP Documents</h5>
+                <a href="{{ url_for('user.upload_sip') }}" class="btn btn-primary btn-sm">Upload New SIP</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Upload Date</th>
+                                <th>Uploaded By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in sip_documents %}
+                            {% if doc.department == 'purchase' %}
+                            <tr>
+                                <td>{{ doc.filename }}</td>
+                                <td>{{ doc.upload_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ doc.uploader.username }}</td>
+                                <td>
+                                    <a href="{{ url_for('user.download_sip', doc_id=doc.id) }}" class="btn btn-sm btn-outline-primary">Download</a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center">No SIP documents found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Purchase Team</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for user in users %}
+                    {% if user.department == 'purchase' %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ user.username }}
+                        <span class="badge bg-primary rounded-pill">{{ user.department }}</span>
+                    </li>
+                    {% endif %}
+                    {% else %}
+                    <li class="list-group-item">No team members found</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

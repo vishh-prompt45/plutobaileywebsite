@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload SIP Document{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Upload SIP Document</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('user.upload_sip') }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <select class="form-select" id="department" name="department" required>
+                            <option value="" selected disabled>Select department</option>
+                            {% if current_user.can_access('sales') %}
+                            <option value="sales">Sales</option>
+                            {% endif %}
+                            {% if current_user.can_access('dispatcher') %}
+                            <option value="dispatcher">Dispatcher</option>
+                            {% endif %}
+                            {% if current_user.can_access('purchase') %}
+                            <option value="purchase">Purchase</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">SIP Document</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                        <div class="form-text">Upload PDF, Word, or Excel files only.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Upload Document</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
